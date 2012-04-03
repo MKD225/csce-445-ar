@@ -1,0 +1,20 @@
+﻿Build started 3/29/2012 3:12:35 PM.
+     1>Project "C:\Augmented Reality\Moutarde-ARToolKit-5f34620\examples\simple\simpleTest.vcxproj" on node 3 (build target(s)).
+     1>InitializeBuildStatus:
+         Touching "Debug\simpleTest.unsuccessfulbuild".
+       ClCompile:
+         c:\Program Files\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"C:\Augmented Reality\Moutarde-ARToolKit-5f34620\examples\simple\..\..\include" /Zi /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /Gm- /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /FR"Debug\\" /Gd /TC /analyze- /errorReport:prompt simpleTest.c
+         simpleTest.c
+     1>C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(990,5): warning MSB8012: TargetPath(C:\Augmented Reality\Moutarde-ARToolKit-5f34620\examples\simple\Debug\simpleTest.exe) does not match the Linker's OutputFile property value (C:\Augmented Reality\Moutarde-ARToolKit-5f34620\bin\simpleTestd.exe). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+     1>C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(992,5): warning MSB8012: TargetName(simpleTest) does not match the Linker's OutputFile property value (simpleTestd). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+       Link:
+         c:\Program Files\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Augmented Reality\Moutarde-ARToolKit-5f34620\examples\simple\..\..\bin\simpleTestd.exe" /NOLOGO /LIBPATH:"C:\Augmented Reality\Moutarde-ARToolKit-5f34620\examples\simple\..\..\lib" libARd.lib libARgsubd.lib libARvideod.lib opengl32.lib glu32.lib glut32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\simpleTest.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Augmented Reality\Moutarde-ARToolKit-5f34620\examples\simple\Debug\simpleTest.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"Debug\simpleTest.lib" /MACHINE:X86 Debug\simpleTest.obj
+         "C:\Augmented Reality\Moutarde-ARToolKit-5f34620\lib\libARd.lib"
+         "C:\Augmented Reality\Moutarde-ARToolKit-5f34620\lib\libARgsubd.lib"
+         "C:\Augmented Reality\Moutarde-ARToolKit-5f34620\lib\libARvideod.lib" /DEBUG 
+     1>LINK : fatal error LNK1104: cannot open file 'libARvideod.lib'
+     1>Done Building Project "C:\Augmented Reality\Moutarde-ARToolKit-5f34620\examples\simple\simpleTest.vcxproj" (build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:00.92

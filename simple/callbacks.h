@@ -48,10 +48,10 @@ void Light1ButtonCallback() {
 
 void Light2ButtonCallback() {
 
-	ambi[0] = 0.1;
-	ambi[1] = 0.1;
-	ambi[2] = 0.1;
-	ambi[3] = 0.1;
+	ambi[0] = 0.0;
+	ambi[1] = 0.0;
+	ambi[2] = 0.0;
+	ambi[3] = 0.0;
 
 	lightZeroColor[0] = 0.4;
 	lightZeroColor[1] = 0.4;

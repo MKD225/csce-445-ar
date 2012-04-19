@@ -85,7 +85,9 @@
     </Midl>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="3dsloader.c" />
     <ClCompile Include="simpleTest.c" />
+    <ClCompile Include="texture.c" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\lib\SRC\AR\libAR.vcxproj">
@@ -112,8 +114,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="3dsloader.h" />
     <ClInclude Include="callbacks.h" />
     <ClInclude Include="gui.h" />
+    <ClInclude Include="texture.h" />
+    <ClInclude Include="tutorial4.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

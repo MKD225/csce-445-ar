@@ -1,23 +1,30 @@
-#ifdef _WIN32
+/*#ifdef _WIN32
 #include <windows.h>
 #endif
 #include <stdio.h>
 #include <stdlib.h>
 #ifndef __APPLE__
 #include <GL/gl.h>
-//#include <GL/glut.h>
+#include <GL/glut.h>
 #else
 #include <OpenGL/gl.h>
-//#include <GLUT/glut.h>
-#endif
+#include <GLUT/glut.h>
+#endif*/
+
+#include <stdio.h>
+#include <windows.h>
+#include <GL/glut.h>
+
 #include <AR/gsub.h>
 #include <AR/video.h>
 #include <AR/param.h>
 #include <AR/ar.h>
 
+
+#include "tutorial4.h"
+#include "texture.h"
+#include "3dsloader.h"
 #include "gui.h"
-//#include "Model_3DS.h"
-//#include "GLTexture.h"
 //
 // Camera configuration.
 //
@@ -40,7 +47,13 @@ double          patt_width     = 80.0;
 double          patt_center[2] = {0.0, 0.0};
 double          patt_trans[3][4];
 
+obj_type object;
 
+typedef int bool;
+#define false 0
+#define true 1
+
+bool can_draw_model = false;
 
 static void   init(void);
 static void   cleanup(void);
@@ -53,11 +66,19 @@ static void   draw( void );
 int main(int argc, char **argv)
 {
 	glutInit(&argc, argv);
+
+
+
 	init();
 
-		glutInitDisplayMode(GLUT_RGB|GLUT_DEPTH|GLUT_DOUBLE);
+	glutInitDisplayMode(GLUT_RGB|GLUT_DEPTH|GLUT_DOUBLE);
 	glutInitWindowSize(winw,winh);
 	glutInitWindowPosition(200,100);
+
+	
+	glShadeModel(GL_SMOOTH); // Type of shading for the polygons
+	glPolygonMode (GL_FRONT_AND_BACK, GL_FILL); // Polygon rasterization mode (polygon filled)
+    
 
 
 	//glutDisplayFunc(draw);
@@ -67,6 +88,30 @@ int main(int argc, char **argv)
 	glutPassiveMotionFunc(MousePassiveMotion);
 
     arVideoCapStart();
+
+
+	glEnable(GL_TEXTURE_2D); // This Enable the Texture mapping
+    //Load3DS (&object,"sofa.3DS");
+
+
+	//*******************************************************************************************
+	//load model here
+	//*******************************************************************************************
+
+
+	Load3DS (&object,"spaceship.3ds");
+
+	object.id_texture=LoadBitmap2("spaceshiptexture.bmp"); // The Function LoadBitmap() return the current texture ID
+    
+	printf("texture id: %d\n",object.id_texture);
+
+    // If the last function returns -1 it means the file was not found so we exit from the program
+    if (object.id_texture==-1)
+    {
+        MessageBox(NULL,"Image file: spaceshiptexture.bmp not found", "Zetadeck",MB_OK | MB_ICONERROR);
+        exit (0);
+    }
+
 
     argMainLoop( MouseButton, keyEvent, mainLoop );
 
@@ -142,7 +187,12 @@ static void mainLoop(void)
     if( k == -1 ) {
         //argSwapBuffers();
         //return;
+		can_draw_model = false;
     }
+
+	else {
+		can_draw_model = true;
+	}
 
     /* get the transformation between the marker and the real camera */
     arGetTransMat(&marker_info[k], patt_center, patt_width, patt_trans);
@@ -189,16 +239,62 @@ static void cleanup(void)
     argCleanup();
 }
 
+
+static void drawModel() {
+
+	int l_index;
+	//glEnable(GL_LIGHT0);
+	glEnable(GL_TEXTURE_2D); // This Enable the Texture mapping
+	glEnable(GL_COLOR_MATERIAL);
+	glBindTexture(GL_TEXTURE_2D, object.id_texture); // We set the active texture 
+
+    glBegin(GL_TRIANGLES); // glBegin and glEnd delimit the vertices that define a primitive (in our case triangles)
+    for (l_index=0;l_index<object.polygons_qty;l_index++)
+    {
+        //----------------- FIRST VERTEX -----------------
+        // Texture coordinates of the first vertex
+        glTexCoord2f( object.mapcoord[ object.polygon[l_index].a ].u,
+                      object.mapcoord[ object.polygon[l_index].a ].v);
+        // Coordinates of the first vertex
+        glVertex3f( object.vertex[ object.polygon[l_index].a ].x,
+                    object.vertex[ object.polygon[l_index].a ].y,
+                    object.vertex[ object.polygon[l_index].a ].z); //Vertex definition
+
+        //----------------- SECOND VERTEX -----------------
+        // Texture coordinates of the second vertex
+        glTexCoord2f( object.mapcoord[ object.polygon[l_index].b ].u,
+                      object.mapcoord[ object.polygon[l_index].b ].v);
+        // Coordinates of the second vertex
+        glVertex3f( object.vertex[ object.polygon[l_index].b ].x,
+                    object.vertex[ object.polygon[l_index].b ].y,
+                    object.vertex[ object.polygon[l_index].b ].z);
+        
+        //----------------- THIRD VERTEX -----------------
+        // Texture coordinates of the third vertex
+        glTexCoord2f( object.mapcoord[ object.polygon[l_index].c ].u,
+                      object.mapcoord[ object.polygon[l_index].c ].v);
+        // Coordinates of the Third vertex
+        glVertex3f( object.vertex[ object.polygon[l_index].c ].x,
+                    object.vertex[ object.polygon[l_index].c ].y,
+                    object.vertex[ object.polygon[l_index].c ].z);
+    }
+
+    glEnd();
+	glFlush(); // This force the execution of OpenGL commands
+	glDisable(GL_TEXTURE_2D);
+}
+
 static void draw( void )
 {
     double    gl_para[16];
     GLfloat   mat_ambient[]     = {0.0, 0.0, 1.0, 1.0};
     GLfloat   mat_flash[]       = {0.0, 0.0, 1.0, 1.0};
     GLfloat   mat_flash_shiny[] = {50.0};
-    GLfloat   light_position[]  = {100.0,-200.0,200.0,0.0};
-    //GLfloat   ambi[]            = {0.1, 0.1, 0.1, 0.1};
-    //GLfloat   lightZeroColor[]  = {0.9, 0.9, 0.9, 0.1};
-    
+    GLfloat   light_position[]  = {600.0,400.0,800.0,0.0};
+    /*GLfloat   ambi[]            = {0.1, 0.1, 0.1, 0.1};
+    GLfloat   lightZeroColor[]  = {0.9, 0.9, 0.9, 0.1};
+    */
+
     argDrawMode3D();
     argDraw3dCamera( 0, 0 );
     glClearDepth( 1.0 );
@@ -211,14 +307,17 @@ static void draw( void )
     glMatrixMode(GL_MODELVIEW);
     glLoadMatrixd( gl_para );
 
+	
     glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
+    
     glLightfv(GL_LIGHT0, GL_POSITION, light_position);
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambi);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, lightZeroColor);
+	glEnable(GL_LIGHT0);
     glMaterialfv(GL_FRONT, GL_SPECULAR, mat_flash);
     glMaterialfv(GL_FRONT, GL_SHININESS, mat_flash_shiny);	
-    glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+    //glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, ambi);
     glMatrixMode(GL_MODELVIEW);
     glTranslatef( 0.0, 0.0, 25.0 );
 	glTranslatef(updateX, updateY, updateZ);
@@ -226,7 +325,12 @@ static void draw( void )
 	/************************************************************************/
 	/*Model Goes Here*/
 	/************************************************************************/
-    glutSolidCube(50.0);
+
+	if(can_draw_model == true) {
+		drawModel();
+	}
+
+	
 
     glDisable( GL_LIGHTING );
 

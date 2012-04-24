@@ -1,4 +1,4 @@
-﻿Build started 4/17/2012 6:43:04 PM.
+﻿Build started 4/23/2012 7:20:50 PM.
      1>Project "C:\Augmented Reality\Moutarde-ARToolKit-5f34620\examples\simple\simpleTest.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Release\simpleTest.unsuccessfulbuild" because "AlwaysCreate" was specified.
@@ -25,4 +25,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.58
+Time Elapsed 00:00:01.65

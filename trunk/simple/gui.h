@@ -137,9 +137,14 @@ Button RightButton = {110,25, 50,20, 0,0, "Right", RightButtonCallback };
 Button RaiseButton = {210,5, 50,20, 0,0, "Raise", RaiseButtonCallback };
 Button LowerButton = {210,40, 50,20, 0,0, "Lower", LowerButtonCallback };
 
-Button Light1Button = {280,40, 50,20, 0,0, "Light 1", Light1ButtonCallback };
-Button Light2Button = {330,40, 50,20, 0,0, "Light 2", Light2ButtonCallback };
-Button Light3Button = {380,40, 50,20, 0,0, "Light 3", Light3ButtonCallback };
+Button Light1Button = {280,5, 50,20, 0,0, "Light 1", Light1ButtonCallback };
+Button Light2Button = {340,5, 50,20, 0,0, "Light 2", Light2ButtonCallback };
+Button Light3Button = {400,5, 50,20, 0,0, "Light 3", Light3ButtonCallback };
+
+Button ScaleIncreaseButton = {460,5, 80,20, 0,0, "Increase Size", ScaleIncreaseButtonCallback };
+Button ScaleDecreaseButton = {460,35, 80,20, 0,0, "Decrease Size", ScaleDecreaseButtonCallback };
+
+Button HideGUIButton = {0,0, 50,20, 0,0, "Hide GUI", Light3ButtonCallback };
 
 /*----------------------------------------------------------------------------------------
  *	\brief	This function draws a text string to the screen using glut bitmap fonts.
@@ -445,6 +450,9 @@ void Draw2D()
 	ButtonDraw(&Light1Button);
 	ButtonDraw(&Light2Button);
 	ButtonDraw(&Light3Button);
+	ButtonDraw(&ScaleIncreaseButton);
+	ButtonDraw(&ScaleDecreaseButton);
+
 }
 
 
@@ -512,6 +520,8 @@ void MouseButton(int button,int state,int x, int y)
 			ButtonPress(&Light1Button,x,y);
 			ButtonPress(&Light2Button,x,y);
 			ButtonPress(&Light3Button,x,y);
+			ButtonPress(&ScaleIncreaseButton,x,y);
+			ButtonPress(&ScaleDecreaseButton,x,y);
 			break;
 		case GLUT_MIDDLE_BUTTON:
 			TheMouse.mmb = 1;
@@ -540,6 +550,8 @@ void MouseButton(int button,int state,int x, int y)
 			ButtonRelease(&Light1Button,x,y);
 			ButtonRelease(&Light2Button,x,y);
 			ButtonRelease(&Light3Button,x,y);
+			ButtonRelease(&ScaleIncreaseButton,x,y);
+			ButtonRelease(&ScaleDecreaseButton,x,y);
 
 			break;
 		case GLUT_MIDDLE_BUTTON:
@@ -591,7 +603,8 @@ void MouseMotion(int x, int y)
 	ButtonPassive(&Light1Button,x,y);
 	ButtonPassive(&Light2Button,x,y);
 	ButtonPassive(&Light3Button,x,y);
-
+	ButtonPassive(&ScaleIncreaseButton,x,y);
+	ButtonPassive(&ScaleDecreaseButton,x,y);
 	/*
 	 *	Force a redraw of the screen
 	 */
@@ -630,6 +643,8 @@ void MousePassiveMotion(int x, int y)
 	ButtonPassive(&Light1Button,x,y);
 	ButtonPassive(&Light2Button,x,y);
 	ButtonPassive(&Light3Button,x,y);
+	ButtonPassive(&ScaleIncreaseButton,x,y);
+	ButtonPassive(&ScaleDecreaseButton,x,y);
 
 	/*
 	 *	Note that I'm not using a glutPostRedisplay() call here. The passive motion function 

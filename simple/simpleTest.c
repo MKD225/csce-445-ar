@@ -99,9 +99,9 @@ int main(int argc, char **argv)
 	//*******************************************************************************************
 
 
-	Load3DS (&object,"spaceship.3ds");
+	Load3DS (&object,"models/armchair.3ds");
 
-	object.id_texture=LoadBitmap2("spaceshiptexture.bmp"); // The Function LoadBitmap() return the current texture ID
+	object.id_texture=LoadBitmap2("models/armchair_diff.bmp"); // The Function LoadBitmap() return the current texture ID
     
 	printf("texture id: %d\n",object.id_texture);
 
@@ -212,6 +212,10 @@ static void init( void )
     if( arVideoInqSize(&xsize, &ysize) < 0 ) exit(0);
     printf("Image size (x,y) = (%d,%d)\n", xsize, ysize);
 
+	winw = xsize;
+	winh = ysize;
+
+
     /* set the initial camera parameters */
     if( arParamLoad(cparam_name, 1, &wparam) < 0 ) {
         printf("Camera parameter load error !!\n");
@@ -290,7 +294,7 @@ static void draw( void )
     GLfloat   mat_ambient[]     = {0.0, 0.0, 1.0, 1.0};
     GLfloat   mat_flash[]       = {0.0, 0.0, 1.0, 1.0};
     GLfloat   mat_flash_shiny[] = {50.0};
-    GLfloat   light_position[]  = {600.0,400.0,800.0,0.0};
+    GLfloat   light_position[]  = {500.0,500.0,500.0,500.0 * scaleAmount};
     /*GLfloat   ambi[]            = {0.1, 0.1, 0.1, 0.1};
     GLfloat   lightZeroColor[]  = {0.9, 0.9, 0.9, 0.1};
     */
@@ -319,12 +323,17 @@ static void draw( void )
     //glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
 	glMaterialfv(GL_FRONT, GL_AMBIENT, ambi);
     glMatrixMode(GL_MODELVIEW);
-    glTranslatef( 0.0, 0.0, 25.0 );
+
+	glScalef(scaleAmount,scaleAmount,scaleAmount);
+    //glTranslatef( 0.0, 0.0, 25.0 );
 	glTranslatef(updateX, updateY, updateZ);
 
 	/************************************************************************/
 	/*Model Goes Here*/
 	/************************************************************************/
+    //glutSolidCube(50.0);
+
+	
 
 	if(can_draw_model == true) {
 		drawModel();
